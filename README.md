@@ -105,7 +105,7 @@ project:
 	cp $(lib_path)/...../TrueSTUDIO/STM3210E-EVAL/stm32_flash.ld ./project 
 ```
 
-####联系方式
+#### 联系方式
 
 ​	由于初学makefile编写，错误之处还请指出哈
 
