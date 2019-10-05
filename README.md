@@ -110,3 +110,6 @@ project:
 ​	由于初学makefile编写，错误之处还请指出哈
 
 ​	QQ:3033668736
+
+#### 示例工程
+    https://github.com/geekchun/stm32-makefile-project
