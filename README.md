@@ -1,6 +1,6 @@
 ## 写在前面
 
-​	这是一个为stm32f103ze处理器写的裸机工程的makefile，具有建立工程，编译工程，下载hex文件到目标板的功能。
+​     这是一个为stm32f103ze处理器写的裸机工程的makefile，具有建立工程，编译工程，下载hex文件到目标板的功能。
 
 ​	依赖于gcc-arm-none-eabi交叉编译工具链，以及openocd调试软件。硬件上需要一个jlink。
 
@@ -40,13 +40,40 @@
 
 ​	在编辑完用户代码之后，敲入make来编译工程,编译成功后你将看到如下结果，编译生成的hex文件将保存到project/output下。
 
-![屏幕快照 2019-10-05 16.42.29](/Users/geekchun/Desktop/屏幕快照 2019-10-05 16.42.29.png)
+```bash
+...
+arm-none-eabi-objcopy ./project/output/led.elf  ./project/output/led.bin -Obinary 
+arm-none-eabi-objcopy ./project/output/led.elf  ./project/output/led.hex -Oihex
+```
 
 #### 下载调试
 
 ​	在连接jlink并安装好相应驱动之后，敲入make update来将hex文件下载到目标板，下载成功后你将看到如下界面。
 
-![屏幕快照 2019-10-05 16.47.21](/Users/geekchun/Desktop/屏幕快照 2019-10-05 16.47.21.png)
+```bash
+adapter speed: 1000 kHz
+adapter_nsrst_delay: 100
+jtag_ntrst_delay: 100
+none separate
+cortex_m reset_config sysresetreq
+Info : No device selected, using first device.
+Info : J-Link V9 compiled May 17 2019 09:50:41
+Info : Hardware version: 9.60
+Info : VTarget = 3.301 V
+Info : clock speed 1000 kHz
+Info : JTAG tap: stm32f1x.cpu tap/device found: 0x3ba00477 (mfg: 0x23b (ARM Ltd.), part: 0xba00, ver: 0x3)
+Info : JTAG tap: stm32f1x.bs tap/device found: 0x06414041 (mfg: 0x020 (STMicroelectronics), part: 0x6414, ver: 0x0)
+Info : stm32f1x.cpu: hardware has 6 breakpoints, 4 watchpoints
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08001000 msp: 0x2000fff0
+auto erase enabled
+Info : device id = 0x10036414
+Info : flash size = 512kbytes
+wrote 6144 bytes from file ./project/output/led.hex in 0.332135s (18.065 KiB/s)
+Info : JTAG tap: stm32f1x.cpu tap/device found: 0x3ba00477 (mfg: 0x23b (ARM Ltd.), part: 0xba00, ver: 0x3)
+Info : JTAG tap: stm32f1x.bs tap/device found: 0x06414041 (mfg: 0x020 (STMicroelectronics), part: 0x6414, ver: 0x0)
+shutdown command invoked
+```
 
 
 
@@ -78,12 +105,8 @@ project:
 	cp $(lib_path)/...../TrueSTUDIO/STM3210E-EVAL/stm32_flash.ld ./project 
 ```
 
-#### 其他
+####联系方式
 
-​	关于其他事项的修改不再赘述
+​	由于初学makefile编写，错误之处还请指出哈
 
-#####联系方式
-
-由于初学makefile编写，错误之处还请指出哈
-
-QQ:3033668736
+​	QQ:3033668736
