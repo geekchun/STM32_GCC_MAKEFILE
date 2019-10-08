@@ -55,7 +55,7 @@ project:
 update:
 	openocd -f /usr/local/share/openocd/scripts/interface/jlink.cfg \
 	 -f /usr/local/share/openocd/scripts/target/stm32f1x.cfg \
-	-c init -c halt -c "flash write_image erase ./project/output/led.hex" -c reset -c shutdown
+	-c init -c halt -c "flash write_image erase ./project/output/$(TARGET).hex" -c reset -c shutdown
 clean:
 	rm -f $(shell find ./ -name '*.o')
 	rm -f $(shell find ./ -name '*.d')
