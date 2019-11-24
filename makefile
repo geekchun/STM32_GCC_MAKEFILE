@@ -6,9 +6,17 @@ export AS         = arm-none-eabi-as
 export LD         = arm-none-eabi-ld
 export OBJCOPY    = arm-none-eabi-objcopy
 
-top=$(shell pwd)
+
+#the top dir
+#linux & mac os
+top = $(shell pwd)
+#windows
+#top = $(shell echo %cd%)
+
 
 lib_path= ./STM32F10x_StdPeriph_Lib_V3.5.0
+#windows
+#lib_path= $(top)\STM32F10x_StdPeriph_Lib_V3.5.0
 
 inc = -I $(top)/cmsis/inc \
       -I $(top)/libraries/inc \
@@ -22,8 +30,12 @@ target_flag = -mthumb -mcpu=cortex-m3 -Wl,--start-group -lc -lm -Wl,--end-group 
 as_flag     = -c -mthumb -mcpu=cortex-m3 -g -Wa,--warn -o
 
 
-
+#sources file path
+#linux & mac os
 src = $(shell find ./ -name '*.c')
+#windows
+#src = $(shell for /r ./ %%i in (*.c) do @echo %%i)
+
 obj = $(src:%.c=%.o)
 
 
@@ -52,14 +64,30 @@ project:
 	cp $(lib_path)/Project/STM32F10x_StdPeriph_Template/TrueSTUDIO/STM3210E-EVAL/stm32_flash.ld ./project 
 	touch ./user/src/main.c
 	rm -rf STM32F10x_StdPeriph_Lib_V3.5.0
+#windows
+# md cmsis cmsis\inc cmsis\src driver driver\inc driver\src project project\output user user\inc user\src doc startup libraries
+# copy $(lib_path)\stm32f10x_stdperiph_lib_um.chm $(top)\doc
+# xcopy /e  $(lib_path)\Libraries\STM32F10x_StdPeriph_Driver $(top)\libraries
+# xcopy $(lib_path)\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h $(top)\cmsis\inc
+# xcopy $(lib_path)\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h $(top)\cmsis\inc
+# xcopy $(lib_path)\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h $(top)\cmsis\inc
+# xcopy $(lib_path)\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.c $(top)\cmsis\src
+# xcopy $(lib_path)\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup\TrueSTUDIO\startup_stm32f10x_hd.s $(top)\startup
+# xcopy $(lib_path)\Project\STM32F10x_StdPeriph_Template\stm32f10x_it.c $(top)\user\src
+# xcopy $(lib_path)\Project\STM32F10x_StdPeriph_Template\stm32f10x_it.h $(top)\user\inc
+# xcopy $(lib_path)\Project\STM32F10x_StdPeriph_Template\stm32f10x_conf.h $(top)\user\inc
+# xcopy $(lib_path)\Project\STM32F10x_StdPeriph_Template\TrueSTUDIO\STM3210E-EVAL\stm32_flash.ld $(top)\project
+# echo #include "stm32f10x.h" int main() {}> $(top)\user\src\main.c
+# rd /s /q STM32F10x_StdPeriph_Lib_V3.5.0
 update:
 	openocd -f /usr/local/share/openocd/scripts/interface/jlink.cfg \
 	 -f /usr/local/share/openocd/scripts/target/stm32f1x.cfg \
 	-c init -c halt -c "flash write_image erase ./project/output/$(TARGET).hex" -c reset -c shutdown
 clean:
 	rm -f $(shell find ./ -name '*.o')
-	rm -f $(shell find ./ -name '*.d')
 	rm -f $(shell find ./ -name '*.map')
 	rm -f $(shell find ./ -name '*.elf')
 	rm -f $(shell find ./ -name '*.bin')
 	rm -f $(shell find ./ -name '*.hex')
+#windows
+# del /q  $(shell for /r ./ %%i in (*.o,*.map,*.hex,*.elf,*.bin) do @echo %%i)
