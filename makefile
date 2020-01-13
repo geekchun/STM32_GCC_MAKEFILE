@@ -7,7 +7,6 @@ export LD         = arm-none-eabi-ld
 export OBJCOPY    = arm-none-eabi-objcopy
 
 
-#the top dir
 #linux & mac os
 top = $(shell pwd)
 #windows
